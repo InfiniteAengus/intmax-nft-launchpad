@@ -76,7 +76,7 @@ export default function Collection({ params }: { params: any }) {
                 alt='logo'
                 width={100}
                 height={100}
-                className='rounded-full border border-white'
+                className='h-[100px] w-[100px] rounded-full border border-white object-cover'
               />
               <div>
                 <p className='font-bold'>{collectionData?.name}</p>

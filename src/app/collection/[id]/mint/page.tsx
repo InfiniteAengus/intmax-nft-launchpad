@@ -23,6 +23,7 @@ import { collectionWithVariablesQueryDocument } from '@/lib/graphql/queries';
 
 export default function CreateNFT({ params }: { params: any }) {
   const [nftMetadata, setNFTMetadata] = useState<Record<string, any>>({});
+  const [loading, setLoading] = useState<boolean>(false);
   const { pinAssetMetadata } = useIPFS();
 
   const { data, isLoading: isCollectionLoading } = useQuery({
@@ -43,6 +44,7 @@ export default function CreateNFT({ params }: { params: any }) {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     const tokenURI = await pinAssetMetadata(nftMetadata);
 
     const hash = await writeContract(wagmiConfig, {
@@ -53,6 +55,7 @@ export default function CreateNFT({ params }: { params: any }) {
     });
 
     await waitForTransactionReceipt(wagmiConfig, { hash });
+    setLoading(false);
   };
 
   const { result: logoImage, uploader: uploadLogoImageFile } =
@@ -110,7 +113,15 @@ export default function CreateNFT({ params }: { params: any }) {
                 <Field name='external_url'>
                   {(props) => <InputForm placeholder='Link' {...props} />}
                 </Field>
-                <Button className='!mt-10'>Mint an NFT</Button>
+                <Button
+                  className='!mt-10 flex w-full justify-center'
+                  disabled={loading}>
+                  {loading ? (
+                    <Spinner width={20} height={20} />
+                  ) : (
+                    <>Mint an NFT</>
+                  )}
+                </Button>
               </form>
             )}
           />

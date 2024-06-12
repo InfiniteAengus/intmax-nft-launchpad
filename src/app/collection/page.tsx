@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
 import Link from 'next/link';
 
-import CollectionCard from '@/components/NFTCard';
+import CollectionCard from '@/components/CollectionCard';
 import EmptyContent from '@/components/EmptyContent';
 import Spinner from '@/components/Spinner';
 import { GRAPHQL_SERVER } from '@/config/env';

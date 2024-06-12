@@ -1,11 +1,16 @@
-import { Oval } from "react-loader-spinner";
+import { Oval } from 'react-loader-spinner';
 
-const Spinner = () => {
+interface Props {
+  width?: number;
+  height?: number;
+}
+
+const Spinner: React.FC<Props> = ({ width, height }: Props) => {
   return (
     <Oval
       visible={true}
-      height='80'
-      width='80'
+      height={width || '80'}
+      width={height || '80'}
       color='#beff58'
       ariaLabel='oval-loading'
       wrapperStyle={{}}

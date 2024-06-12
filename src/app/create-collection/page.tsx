@@ -9,6 +9,7 @@ import CollectionCard from '@/components/CollectionCard';
 import Dropzone from '@/components/DropZone';
 import InputForm from '@/components/Form/InputForm';
 import TextareaForm from '@/components/Form/TextAreaForm';
+import Spinner from '@/components/Spinner';
 import { LAUNCHPAD_ADDRESS } from '@/config/contractAddress';
 import { wagmiConfig } from '@/config/wagmiConfig';
 import { useIPFS } from '@/hooks/pinata';
@@ -19,6 +20,7 @@ export default function CreateCollection() {
   const [collectionMetadata, setCollectionMetadata] = useState<
     Record<string, any>
   >({});
+  const [loading, setLoading] = useState<boolean>(false);
   const { pinFile } = useIPFS();
 
   const onFormChange = (e: Record<string, any>) => {
@@ -27,6 +29,8 @@ export default function CreateCollection() {
   };
 
   const handleSave = async () => {
+    setLoading(true);
+
     const logoImage = await pinFile(collectionMetadata.logoImageFile);
     const bannerImage = await pinFile(collectionMetadata.bannerImageFile);
 
@@ -43,6 +47,8 @@ export default function CreateCollection() {
       ],
     });
     await waitForTransactionReceipt(wagmiConfig, { hash });
+
+    setLoading(false);
   };
 
   const { result: logoImage, uploader: uploadLogoImageFile } =
@@ -116,7 +122,16 @@ export default function CreateCollection() {
                 <Field name='ExternalUrl'>
                   {(props) => <InputForm placeholder='Link' {...props} />}
                 </Field>
-                <Button className='!mt-10'>Create a collection</Button>
+                <Button
+                  className='!mt-10 flex w-full justify-center'
+                  disabled={loading}>
+                  {loading ? (
+                    <Spinner width={20} height={20} />
+                  ) : (
+                    <>Create a collection</>
+                  )}
+                </Button>
+                <button></button>
               </form>
             )}
           />
