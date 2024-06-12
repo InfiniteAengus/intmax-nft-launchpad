@@ -1,31 +1,33 @@
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
-import request from "graphql-request";
-import Image from "next/image";
-import Link from "next/link";
-import { useMemo } from "react";
+import { useQuery } from '@tanstack/react-query';
+import request from 'graphql-request';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useMemo } from 'react';
 
-import EmptyContent from "@/components/EmptyContent";
-import NFTCard from "@/components/NFTCard";
-import Spinner from "@/components/Spinner";
-import { GRAPHQL_SERVER } from "@/config/env";
-import { replacePinataUrl } from "@/helpers/pinata";
-import { collectionWithVariablesQueryDocument, nftsWithVariablesQueryDocument } from "@/lib/graphql/queries";
+import EmptyContent from '@/components/EmptyContent';
+import NFTCard from '@/components/NFTCard';
+import Spinner from '@/components/Spinner';
+import { GRAPHQL_SERVER } from '@/config/env';
+import { replacePinataUrl } from '@/helpers/pinata';
+import {
+  collectionWithVariablesQueryDocument,
+  nftsWithVariablesQueryDocument,
+} from '@/lib/graphql/queries';
 
 export default function Collection({ params }: { params: any }) {
-  const {
-    data: nfts,
-    error,
-    isLoading: isNFTsLoading,
-  } = useQuery({
-    queryKey: ["nfts", params.id],
+  const { data: nfts, isLoading: isNFTsLoading } = useQuery({
+    queryKey: ['nfts', params.id],
     queryFn: () => fetchNFTs(params.id),
   });
 
   const { data, isLoading: isCollectionLoading } = useQuery({
-    queryKey: ["collection", params.id],
-    queryFn: () => request(GRAPHQL_SERVER, collectionWithVariablesQueryDocument, { collectionId: params.id }),
+    queryKey: ['collection', params.id],
+    queryFn: () =>
+      request(GRAPHQL_SERVER, collectionWithVariablesQueryDocument, {
+        collectionId: params.id,
+      }),
   });
 
   const collectionData = useMemo(() => {
@@ -33,7 +35,11 @@ export default function Collection({ params }: { params: any }) {
   }, [data]);
 
   const fetchNFTs = async (id: any) => {
-    const { minteds } = await request(GRAPHQL_SERVER, nftsWithVariablesQueryDocument, { collectionId: id });
+    const { minteds } = await request(
+      GRAPHQL_SERVER,
+      nftsWithVariablesQueryDocument,
+      { collectionId: id }
+    );
 
     const updatedMintedData = [...minteds];
 
@@ -47,26 +53,26 @@ export default function Collection({ params }: { params: any }) {
   };
 
   return (
-    <div className='container items-center space-y-8 md:space-y-4 flex-grow'>
+    <div className='container flex-grow items-center space-y-8 md:space-y-4'>
       {isNFTsLoading || isCollectionLoading ? (
-        <div className='items-center justify-center flex flex-col space-y-2 flex-grow'>
+        <div className='flex flex-grow flex-col items-center justify-center space-y-2'>
           <Spinner />
           <p className='text-sm text-textDescription'>Loading nfts..</p>
         </div>
       ) : (
         <>
-          <div className='w-full relative'>
+          <div className='relative w-full'>
             <Image
-              src={replacePinataUrl(collectionData?.banner || "")}
+              src={replacePinataUrl(collectionData?.banner || '')}
               alt='banner'
               width='100'
               height='100'
-              className='w-full h-[200px] object-cover rounded-xl'
+              className='h-[200px] w-full rounded-xl object-cover'
             />
-            <div className='absolute inset-0 h-full w-full z-0 bg-gradient-linear' />
-            <div className='absolute z-10 bottom-0 w-full p-4 space-y-4'>
+            <div className='absolute inset-0 z-0 h-full w-full bg-gradient-linear' />
+            <div className='absolute bottom-0 z-10 w-full space-y-4 p-4'>
               <Image
-                src={replacePinataUrl(collectionData?.logo || "")}
+                src={replacePinataUrl(collectionData?.logo || '')}
                 alt='logo'
                 width={100}
                 height={100}
@@ -78,11 +84,10 @@ export default function Collection({ params }: { params: any }) {
               </div>
             </div>
 
-            <div className='absolute z-10 right-0 bottom-0 p-4 space-y-4'>
+            <div className='absolute bottom-0 right-0 z-10 space-y-4 p-4'>
               <Link
                 href={`/collection/${params.id}/mint`}
-                className='bg-primary rounded-md px-4 py-2 text-background font-bold !mt-8'
-              >
+                className='!mt-8 rounded-md bg-primary px-4 py-2 font-bold text-background'>
                 Mint an NFT
               </Link>
             </div>
@@ -95,7 +100,7 @@ export default function Collection({ params }: { params: any }) {
             />
           )}
 
-          <div className='grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-cols-5 gap-4'>
+          <div className='grid grid-cols-5 gap-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1'>
             {nfts && nfts.map((nft) => <NFTCard nft={nft} key={nft.tokenId} />)}
           </div>
         </>

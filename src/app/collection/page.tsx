@@ -1,27 +1,30 @@
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
-import request from "graphql-request";
-import Link from "next/link";
+import { useQuery } from '@tanstack/react-query';
+import request from 'graphql-request';
+import Link from 'next/link';
 
-import CollectionCard from "@/components/CollectionCard";
-import EmptyContent from "@/components/EmptyContent";
-import Spinner from "@/components/Spinner";
-import { GRAPHQL_SERVER } from "@/config/env";
-import { allCollectionsWithVariablesQueryDocument } from "@/lib/graphql/queries";
+import CollectionCard from '@/components/NFTCard';
+import EmptyContent from '@/components/EmptyContent';
+import Spinner from '@/components/Spinner';
+import { GRAPHQL_SERVER } from '@/config/env';
+import { allCollectionsWithVariablesQueryDocument } from '@/lib/graphql/queries';
 
 export default function Collection() {
   const { data, isLoading } = useQuery({
-    queryKey: ["collections"],
-    queryFn: async () => request(GRAPHQL_SERVER, allCollectionsWithVariablesQueryDocument, { first: 10 }),
+    queryKey: ['collections'],
+    queryFn: async () =>
+      request(GRAPHQL_SERVER, allCollectionsWithVariablesQueryDocument, {
+        first: 10,
+      }),
   });
 
   return (
-    <div className='container items-center space-y-8 md:space-y-4 flex-grow'>
+    <div className='container flex-grow items-center space-y-8 md:space-y-4'>
       <h4 className='text-2xl font-bold'>Explore collections</h4>
 
       {isLoading ? (
-        <div className='items-center justify-center flex flex-col space-y-2 flex-grow'>
+        <div className='flex flex-grow flex-col items-center justify-center space-y-2'>
           <Spinner />
           <p className='text-sm text-textDescription'>Loading collections..</p>
         </div>
@@ -35,8 +38,7 @@ export default function Collection() {
                 <>
                   <Link
                     href='/create-collection'
-                    className='bg-primary rounded-md px-4 py-2 text-background font-bold !mt-8'
-                  >
+                    className='!mt-8 rounded-md bg-primary px-4 py-2 font-bold text-background'>
                     Create a collection
                   </Link>
                 </>
@@ -44,7 +46,7 @@ export default function Collection() {
             />
           )}
 
-          <div className='grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-cols-5 gap-4'>
+          <div className='grid grid-cols-5 gap-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1'>
             {data &&
               data.collectionCreateds.map((collection) => (
                 <CollectionCard
@@ -57,15 +59,15 @@ export default function Collection() {
                     CollectionName: collection.name,
                     CollectionSymbol: collection.symbol,
                     ContractAddress: collection.collectionId,
-                    CreatedAt: "",
-                    CreatorInfo: "",
+                    CreatedAt: '',
+                    CreatorInfo: '',
                     Description:
-                      "NFT marketplaces are specialized platforms that facilitate the buying, selling, and creation of Non-Fungible Tokens (NFTs), which are unique digital assets representing ownership of distinct and scarce items, both tangible and intangible.",
-                    ExternalUrl: "",
+                      'NFT marketplaces are specialized platforms that facilitate the buying, selling, and creation of Non-Fungible Tokens (NFTs), which are unique digital assets representing ownership of distinct and scarce items, both tangible and intangible.',
+                    ExternalUrl: '',
                     Id: 123,
                     ImageUrl: collection.logo,
                     OwnerCount: 5,
-                    Wallet: "0x0000",
+                    Wallet: '0x0000',
                   }}
                 />
               ))}

@@ -42,8 +42,7 @@ export default function CreateCollection() {
         1000n, // max supply
       ],
     });
-    const receipt = await waitForTransactionReceipt(wagmiConfig, { hash });
-    console.log(receipt);
+    await waitForTransactionReceipt(wagmiConfig, { hash });
   };
 
   const { result: logoImage, uploader: uploadLogoImageFile } =
