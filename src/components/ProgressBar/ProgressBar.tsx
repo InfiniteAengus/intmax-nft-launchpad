@@ -1,11 +1,14 @@
-"use client";
+'use client';
 
-import NProgress from "nprogress";
-import { Suspense, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import NProgress from 'nprogress';
+import { Suspense, useEffect } from 'react';
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-
-type PushStateInput = [data: any, unused: string, url?: string | URL | null | undefined];
+type PushStateInput = [
+  data: any,
+  unused: string,
+  url?: string | URL | null | undefined,
+];
 
 export default function ProgressBar() {
   useEffect(() => {
@@ -22,14 +25,17 @@ export default function ProgressBar() {
     };
 
     const handleMutation = () => {
-      const anchorElements: NodeListOf<HTMLAnchorElement> = document.querySelectorAll("a[href]");
+      const anchorElements: NodeListOf<HTMLAnchorElement> =
+        document.querySelectorAll('a[href]');
 
       const filteredAnchors = Array.from(anchorElements).filter((element) => {
-        const href = element.getAttribute("href");
-        return href && href.startsWith("/");
+        const href = element.getAttribute('href');
+        return href && href.startsWith('/');
       });
 
-      filteredAnchors.forEach((anchor) => anchor.addEventListener("click", handleAnchorClick));
+      filteredAnchors.forEach((anchor) =>
+        anchor.addEventListener('click', handleAnchorClick)
+      );
     };
 
     const mutationObserver = new MutationObserver(handleMutation);

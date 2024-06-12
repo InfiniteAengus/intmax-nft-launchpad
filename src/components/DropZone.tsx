@@ -1,7 +1,7 @@
-import { useDisplayImage } from "@/hooks/useDisplayImage";
-import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { useCallback, useEffect, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+
+import { useDisplayImage } from '@/hooks/useDisplayImage';
 
 // import { ReactComponent as UploadIcon } from "src/assets/upload.svg";
 // import { replacePinataUrl } from "src/helpers/pinata";
@@ -18,7 +18,7 @@ interface Props {
   style?: Record<string, any>;
 }
 
-const replacePinataUrl = (url: string | undefined = "") => url;
+const replacePinataUrl = (url: string | undefined = '') => url;
 
 const Dropzone = (props: Props) => {
   const { acceptType, setFile, defaultRes, disabled = false } = props;
@@ -43,11 +43,11 @@ const Dropzone = (props: Props) => {
   useEffect(() => {
     if (acceptedFiles.length > 0) {
       let type = 0;
-      if (acceptedFiles[0].type.includes("image")) {
+      if (acceptedFiles[0].type.includes('image')) {
         type = 0;
-      } else if (acceptedFiles[0].type.includes("video")) {
+      } else if (acceptedFiles[0].type.includes('video')) {
         type = 1;
-      } else if (acceptedFiles[0].type.includes("audio")) {
+      } else if (acceptedFiles[0].type.includes('audio')) {
         type = 2;
       }
 
@@ -67,29 +67,33 @@ const Dropzone = (props: Props) => {
     <div
       {...rootProps}
       className='relative flex aspect-square w-[300px] max-w-full flex-col items-center justify-center overflow-hidden rounded-md border border-border bg-componentBackground'
-      style={{ ...props.style }}
-    >
+      style={{ ...props.style }}>
       <input {...inputProps} />
       <div className='absolute left-0 top-0 h-full w-full bg-componentBackground opacity-0 transition-all duration-300 hover:opacity-20' />
-      {typeof result === "string" && !result.toString() && !defaultRes?.link ? (
+      {typeof result === 'string' && !result.toString() && !defaultRes?.link ? (
         <>
           {/* <UploadIcon /> */}
-          <p className='mt-2 text-textDescription'>PNG, GIF, WEBP or MP4. MAX 1Gb</p>
+          <p className='mt-2 text-textDescription'>
+            PNG, GIF, WEBP or MP4. MAX 1Gb
+          </p>
         </>
       ) : fileType === 0 ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={
-            (typeof result === "string" && result.toString()) ||
+            (typeof result === 'string' && result.toString()) ||
             replacePinataUrl(defaultRes?.link) ||
-            "/images/img_error.png"
+            '/images/img_error.png'
           }
           alt='placeholder'
           style={{ ...props.imgStyle }}
         />
       ) : (
         <video
-          src={(typeof result === "string" && result.toString()) || replacePinataUrl(defaultRes?.link)}
+          src={
+            (typeof result === 'string' && result.toString()) ||
+            replacePinataUrl(defaultRes?.link)
+          }
           width='100%'
           style={{ ...props.imgStyle }}
           autoPlay

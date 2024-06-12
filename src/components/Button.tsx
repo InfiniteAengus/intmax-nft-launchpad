@@ -1,13 +1,22 @@
-import { PropsWithChildren } from "react";
-import cn from "classnames";
+import cn from 'classnames';
+import { PropsWithChildren } from 'react';
 
 interface Props extends PropsWithChildren {
   className?: string;
 }
 
-const Button: React.FunctionComponent<Props> = ({ children, className }) => {
+const Button: React.FunctionComponent<Props> = ({
+  children,
+  className,
+}: Props) => {
   return (
-    <button className={cn("bg-primary rounded-md px-4 py-2 text-background font-bold", className)}>{children}</button>
+    <button
+      className={cn(
+        'rounded-md bg-primary px-4 py-2 font-bold text-background',
+        className
+      )}>
+      {children}
+    </button>
   );
 };
 

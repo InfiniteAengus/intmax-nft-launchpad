@@ -1,10 +1,12 @@
 "use client";
 
+import { useAccountModal, useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import cn from "classnames";
 import { useEffect, useRef } from "react";
-import { useConnectModal, useAccountModal, useChainModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useDisconnect } from "wagmi";
+
 import { emojiAvatarForAddress } from "@/lib/emojiAvatarForAddress";
-import { middleEllipsis } from "@/lib/utils";
+
 import { WalletIcon } from "./icons/wallet";
 
 export const ConnectBtn = () => {
@@ -40,22 +42,20 @@ export const ConnectBtn = () => {
     );
   }
 
-  if (isConnected && !chain) {
-    return (
-      <button className='btn' onClick={openChainModal}>
-        Wrong network
-      </button>
-    );
-  }
-
   return (
     <div className='max-w-5xl w-full flex items-center justify-between gap-3'>
-      <button className='btn' onClick={openChainModal}>
-        Switch Networks
-      </button>
       <div
-        className='flex justify-center items-center p-2 border border-border bg-primary font-mono font-bold gap-x-2 cursor-pointer rounded-full'
-        onClick={async () => openAccountModal?.()}
+        className={cn(
+          "flex justify-center items-center p-2 border border-border bg-primary font-mono font-bold gap-x-2 cursor-pointer rounded-full",
+          isConnected && !chain ? "bg-error" : "bg-primary"
+        )}
+        onClick={async () => {
+          if (isConnected && !chain) {
+            openChainModal?.();
+          } else {
+            openAccountModal?.();
+          }
+        }}
       >
         <div
           role='button'

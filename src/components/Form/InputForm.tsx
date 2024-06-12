@@ -1,5 +1,5 @@
-import { useId } from "react";
-import cx from "classnames";
+import cx from 'classnames';
+import { useId } from 'react';
 
 interface InputFormProps extends React.InputHTMLAttributes<HTMLInputElement> {
   boldLabel?: boolean;
@@ -18,19 +18,22 @@ const InputForm: React.FC<InputFormProps> = ({
   input,
   meta,
   ...props
-}) => {
+}: InputFormProps) => {
   const id = useId();
 
   return (
-    <div className={cx("relative", className)}>
+    <div className={cx('relative', className)}>
       <label htmlFor={id}>
-        {label && <p className={boldLabel ? "input-label-bold" : "input-label"}>{label}</p>}
+        {label && (
+          <p className={boldLabel ? 'input-label-bold' : 'input-label'}>
+            {label}
+          </p>
+        )}
         <div
           className={cx(
-            "border rounded-md overflow-hidden",
-            meta.touched && meta.error ? "border-error" : "border-border"
-          )}
-        >
+            'overflow-hidden rounded-md border',
+            meta.touched && meta.error ? 'border-error' : 'border-border'
+          )}>
           <input {...input} className='w-full p-2 text-sm' id={id} {...props} />
         </div>
         {(meta.touched && meta.error) || maxLength ? (

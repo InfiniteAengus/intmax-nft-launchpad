@@ -1,9 +1,9 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
+import axios from 'axios';
+import { useCallback, useState } from 'react';
 
-import { PINATA_API_KEY, PINATA_API_SECRET } from "@/config/env";
+import { PINATA_API_KEY, PINATA_API_SECRET } from '@/config/env';
 
-const pinataGatewayUrl = "ipfs://";
+const pinataGatewayUrl = 'ipfs://';
 
 export const useIPFS = () => {
   const [progress, setProgress] = useState<number | null>(null);
@@ -18,23 +18,30 @@ export const useIPFS = () => {
         shouldUpdateProgress?: boolean;
       }
     ) => {
-      const { isFormData = false, isList = false, shouldUpdateProgress = true } = options;
+      const {
+        isFormData = false,
+        isList = false,
+        shouldUpdateProgress = true,
+      } = options;
 
       try {
         const { data: responseData } = await axios.post(url, data, {
           maxBodyLength: Infinity,
           headers: {
-            "Content-Type": isFormData ? `multipart/form-data; boundary=${data._boundary}` : "application/json",
+            'Content-Type': isFormData
+              ? `multipart/form-data; boundary=${data._boundary}`
+              : 'application/json',
             pinata_api_key: PINATA_API_KEY,
             pinata_secret_api_key: PINATA_API_SECRET,
           },
           onUploadProgress: (d: any) => {
-            if (shouldUpdateProgress) setProgress(Math.round((100 * d.loaded) / d.total));
+            if (shouldUpdateProgress)
+              setProgress(Math.round((100 * d.loaded) / d.total));
           },
         });
         // setPinataUrl(pinata_gateway_url + responseData.IpfsHash + isList ? '/' : '');
         setProgress(null);
-        return `${pinataGatewayUrl}${responseData.IpfsHash}${isList ? "/" : ""}`;
+        return `${pinataGatewayUrl}${responseData.IpfsHash}${isList ? '/' : ''}`;
       } catch (error) {
         setProgress(null);
         throw new Error();
@@ -53,40 +60,51 @@ export const useIPFS = () => {
     const pinataUrl = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
 
     const data = new FormData();
-    data.append("file", file);
+    data.append('file', file);
 
     return await pinData(pinataUrl, data, { ...options, isFormData: true });
   }, []); //eslint-disable-line
 
-  const pinFileList = useCallback(async (files: any[], nameWithOrder: any = 0) => {
-    const pinataUrl = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+  const pinFileList = useCallback(
+    async (files: any[], nameWithOrder: any = 0) => {
+      const pinataUrl = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
 
-    const fData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      fData.append("file", files[i], `a/${!nameWithOrder ? files[i].name : i}`);
-    }
-    fData.append(
-      "pinataMetadata",
-      JSON.stringify({
-        name: `metadata-${Date.now()}`,
-      })
-    );
+      const fData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        fData.append(
+          'file',
+          files[i],
+          `a/${!nameWithOrder ? files[i].name : i}`
+        );
+      }
+      fData.append(
+        'pinataMetadata',
+        JSON.stringify({
+          name: `metadata-${Date.now()}`,
+        })
+      );
 
-    return await pinData(pinataUrl, fData, {
-      isFormData: true,
-      isList: true,
-    });
-  }, []); //eslint-disable-line
+      return await pinData(pinataUrl, fData, {
+        isFormData: true,
+        isList: true,
+      });
+    },
+    [] //eslint-disable-line
+  );
 
   const pinMetadataList = useCallback(async (list: any[]) => {
     const pinataUrl = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
 
     const fData = new FormData();
     for (let i = 0; i < list.length; i++) {
-      const file = new File([JSON.stringify(list[i], null, 2)], `metadata/${i}`, {
-        type: "application/json",
-      });
-      fData.append("file", file);
+      const file = new File(
+        [JSON.stringify(list[i], null, 2)],
+        `metadata/${i}`,
+        {
+          type: 'application/json',
+        }
+      );
+      fData.append('file', file);
     }
 
     return await pinData(pinataUrl, fData, { isFormData: true, isList: true });

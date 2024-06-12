@@ -28,6 +28,7 @@ const config: Config = {
         textDescription: "#9b9b9b",
         white: "#fff",
         primary: "#beff58",
+        error: "#fa4510",
       },
     },
   },
