@@ -61,7 +61,7 @@ const CollectionCard: React.FC<Props> = ({ collection, className }) => {
               alt='logo'
               width={50}
               height={50}
-              className='aspect-1 absolute left-1/2 top-1/2 z-10 w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-border object-cover'
+              className='absolute left-1/2 top-1/2 z-10 aspect-square w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-border object-cover'
             />
           </div>
 
