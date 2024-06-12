@@ -65,8 +65,8 @@ export default function Collection({ params }: { params: any }) {
             <Image
               src={replacePinataUrl(collectionData?.banner || '')}
               alt='banner'
-              width='100'
-              height='100'
+              width='2000'
+              height='700'
               className='h-[200px] w-full rounded-xl object-cover'
             />
             <div className='absolute inset-0 z-0 h-full w-full bg-gradient-linear' />
