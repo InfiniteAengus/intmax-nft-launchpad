@@ -8,6 +8,7 @@ import { shortenAddress } from "@/helpers/shortenAddress";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { replacePinataUrl } from "@/helpers/pinata";
 
 interface Props {
   collection: Collection;
@@ -20,7 +21,7 @@ const CollectionCard: React.FC<Props> = ({ collection, className }) => {
   const handleItemClick = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
-    router.push(`/collection/${collection?.ChainId}/${collection?.ContractAddress}`);
+    router.push(`/collection/${collection?.ContractAddress}`);
   };
 
   const ready = useMemo(() => Object.keys(collection).length !== 0, [collection]);
@@ -31,7 +32,7 @@ const CollectionCard: React.FC<Props> = ({ collection, className }) => {
     >
       {ready ? (
         <Link
-          href={`/collection/${collection?.ChainId}/${collection?.ContractAddress}`}
+          href={`/collection/${collection?.ContractAddress}`}
           draggable='false'
           onDragStart={(e) => {
             e.preventDefault();
@@ -39,11 +40,19 @@ const CollectionCard: React.FC<Props> = ({ collection, className }) => {
         >
           <div className='relative m-1 aspect-[1.4] overflow-hidden rounded-xl' onClick={handleItemClick}>
             <Image
-              src={collection.ImageUrl || collection.BannerImage || "/images/img_error.png"}
+              src={replacePinataUrl(collection.BannerImage || "/images/img_error.png")}
               alt='collection'
               width={300}
               height={300}
-              className='object-cover w-full h-full'
+              className='object-cover w-full h-full blur-sm'
+            />
+
+            <Image
+              src={replacePinataUrl(collection.ImageUrl || "/images/img_error.png")}
+              alt='logo'
+              width={50}
+              height={50}
+              className='absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full object-cover w-1/2 aspect-1 border-border border-4'
             />
           </div>
 
@@ -57,7 +66,7 @@ const CollectionCard: React.FC<Props> = ({ collection, className }) => {
               </div>
             </div>
 
-            <p className='mt-3 line-clamp-3 min-h-[55px] text-center text-sm text-textDescription'>
+            <p className='mt-3 line-clamp-3 min-h-[45px] text-center text-xs text-textDescription'>
               {collection.Description || "<No Desciption>"}
             </p>
 

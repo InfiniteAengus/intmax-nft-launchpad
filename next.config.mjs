@@ -12,6 +12,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "beige-personal-nightingale-17.mypinata.cloud",
       },
+      {
+        protocol: "https",
+        hostname: "nftymeta.mypinata.cloud",
+      },
     ],
   },
 };

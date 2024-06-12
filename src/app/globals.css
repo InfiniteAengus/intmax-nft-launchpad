@@ -17,6 +17,10 @@ textarea {
   @apply outline-none placeholder:text-textDescription bg-componentBackground;
 }
 
+#nprogress .bar {
+  @apply top-0 left-0 h-[2.5px] z-[9999] w-full fixed bg-primary;
+}
+
 ::-webkit-scrollbar {
   height: 8px;
   width: 12px;

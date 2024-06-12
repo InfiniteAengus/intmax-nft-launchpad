@@ -1,3 +1,5 @@
+import { useDisplayImage } from "@/hooks/useDisplayImage";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -22,23 +24,6 @@ const Dropzone = (props: Props) => {
   const { acceptType, setFile, defaultRes, disabled = false } = props;
 
   const [fileType, setFileType] = useState(defaultRes?.type || 0);
-
-  const useDisplayImage = () => {
-    const [result, setResult] = useState<string | ArrayBuffer>("");
-
-    const uploader = (e: any) => {
-      const imageFile = e;
-
-      const reader = new FileReader();
-      reader.addEventListener("load", (e) => {
-        setResult(e.target?.result || "");
-      });
-
-      reader.readAsDataURL(imageFile);
-    };
-
-    return { result, uploader };
-  };
 
   const onDrop = useCallback((acceptedFiles: any[]) => {
     acceptedFiles.forEach((file) => {
@@ -92,6 +77,7 @@ const Dropzone = (props: Props) => {
           <p className='mt-2 text-textDescription'>PNG, GIF, WEBP or MP4. MAX 1Gb</p>
         </>
       ) : fileType === 0 ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={
             (typeof result === "string" && result.toString()) ||

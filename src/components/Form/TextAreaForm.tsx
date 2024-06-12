@@ -18,7 +18,10 @@ const TextareaForm: React.FC<TextareaFormProps> = ({ className, label, maxLength
         {label && <p className='input-label pb-4'>{label}</p>}
         <textarea
           {...input}
-          className={cx("w-full border p-2 rounded-md", meta.touched && meta.error ? "border-error" : "border-border")}
+          className={cx(
+            "w-full border p-2 rounded-md text-sm",
+            meta.touched && meta.error ? "border-error" : "border-border"
+          )}
           id={id}
           {...props}
         />

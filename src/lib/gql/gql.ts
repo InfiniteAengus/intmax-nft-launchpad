@@ -14,6 +14,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query allCollectionsWithVariablesQuery($first: Int!) {\n    collectionCreateds(first: $first) {\n      banner\n      logo\n      collectionId\n      name\n      symbol\n    }\n  }\n": types.AllCollectionsWithVariablesQueryDocument,
+    "\n  query collectionWithVariablesQuery($collectionId: BigInt!) {\n    collectionCreateds(where: { collectionId: $collectionId }) {\n      banner\n      logo\n      collectionId\n      name\n      symbol\n    }\n  }\n": types.CollectionWithVariablesQueryDocument,
+    "\n  query nftsWithVariablesQuery($collectionId: BigInt!) {\n    minteds(where: { collectionId: $collectionId }) {\n      collectionId\n      tokenId\n      owner\n      tokenURI\n    }\n  }\n": types.NftsWithVariablesQueryDocument,
 };
 
 /**
@@ -34,6 +36,14 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query allCollectionsWithVariablesQuery($first: Int!) {\n    collectionCreateds(first: $first) {\n      banner\n      logo\n      collectionId\n      name\n      symbol\n    }\n  }\n"): (typeof documents)["\n  query allCollectionsWithVariablesQuery($first: Int!) {\n    collectionCreateds(first: $first) {\n      banner\n      logo\n      collectionId\n      name\n      symbol\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query collectionWithVariablesQuery($collectionId: BigInt!) {\n    collectionCreateds(where: { collectionId: $collectionId }) {\n      banner\n      logo\n      collectionId\n      name\n      symbol\n    }\n  }\n"): (typeof documents)["\n  query collectionWithVariablesQuery($collectionId: BigInt!) {\n    collectionCreateds(where: { collectionId: $collectionId }) {\n      banner\n      logo\n      collectionId\n      name\n      symbol\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query nftsWithVariablesQuery($collectionId: BigInt!) {\n    minteds(where: { collectionId: $collectionId }) {\n      collectionId\n      tokenId\n      owner\n      tokenURI\n    }\n  }\n"): (typeof documents)["\n  query nftsWithVariablesQuery($collectionId: BigInt!) {\n    minteds(where: { collectionId: $collectionId }) {\n      collectionId\n      tokenId\n      owner\n      tokenURI\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

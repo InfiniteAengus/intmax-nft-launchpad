@@ -5,6 +5,7 @@ import { useConnectModal, useAccountModal, useChainModal } from "@rainbow-me/rai
 import { useAccount, useDisconnect } from "wagmi";
 import { emojiAvatarForAddress } from "@/lib/emojiAvatarForAddress";
 import { middleEllipsis } from "@/lib/utils";
+import { WalletIcon } from "./icons/wallet";
 
 export const ConnectBtn = () => {
   const { isConnecting, address, isConnected, chain } = useAccount();
@@ -24,7 +25,7 @@ export const ConnectBtn = () => {
   if (!isConnected) {
     return (
       <button
-        className="btn"
+        className='btn bg-primary rounded-full p-3 text-background'
         onClick={async () => {
           // Disconnecting wallet first because sometimes when is connected but the user is not connected
           if (isConnected) {
@@ -34,32 +35,32 @@ export const ConnectBtn = () => {
         }}
         disabled={isConnecting}
       >
-        {isConnecting ? "Connecting..." : "Connect your wallet"}
+        {isConnecting ? <>...</> : <WalletIcon className='w-5 h-5' />}
       </button>
     );
   }
 
   if (isConnected && !chain) {
     return (
-      <button className="btn" onClick={openChainModal}>
+      <button className='btn' onClick={openChainModal}>
         Wrong network
       </button>
     );
   }
 
   return (
-    <div className="max-w-5xl w-full flex items-center justify-between gap-3">
-      <button className="btn" onClick={openChainModal}>
+    <div className='max-w-5xl w-full flex items-center justify-between gap-3'>
+      <button className='btn' onClick={openChainModal}>
         Switch Networks
       </button>
       <div
-        className="flex justify-center items-center px-4 py-2 border border-neutral-700 bg-neutral-800/30 rounded-xl font-mono font-bold gap-x-2 cursor-pointer"
+        className='flex justify-center items-center p-2 border border-border bg-primary font-mono font-bold gap-x-2 cursor-pointer rounded-full'
         onClick={async () => openAccountModal?.()}
       >
         <div
-          role="button"
+          role='button'
           tabIndex={1}
-          className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden"
+          className='h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden'
           style={{
             backgroundColor,
             boxShadow: "0px 2px 2px 0px rgba(81, 98, 255, 0.20)",
@@ -67,7 +68,6 @@ export const ConnectBtn = () => {
         >
           {emoji}
         </div>
-        <p>{middleEllipsis(address as string, 4)}</p>
       </div>
     </div>
   );
